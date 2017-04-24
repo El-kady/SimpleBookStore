@@ -1,0 +1,13 @@
+{% extends 'SimpleBookStore/layout.html' %}
+
+{% block content %}
+    <div class="ui segments">
+        <div class="ui segment">{{ segment_title }}</div>
+        <div class="ui blue segment">
+            {% for book in books %}
+                {{ book.title }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

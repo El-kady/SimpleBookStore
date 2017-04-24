@@ -1,0 +1,73 @@
+{% extends 'SimpleBookStore/wrapper.html' %}
+
+{% block body %}
+
+    <div class="ui attached stackable menu">
+        <div class="ui container">
+            <a href="#" class="header item">
+                Simple Book Store
+            </a>
+            <a class="item">
+                <i class="home icon"></i> Home
+            </a>
+            <div class="right item">
+                <div class="ui input"><input type="text" placeholder="Search..."></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui sixteen column doubling stackable grid main container">
+        <div class="eleven wide column">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="five wide column">
+            {% if request.user.is_authenticated %}
+                <div class="ui segments">
+                    <div class="ui segment">
+                        {{ request.user.username }}
+                    </div>
+                    <div class="ui blue segment">
+                        <div class="ui large horizontal divided list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Helen</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Christian</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Daniel</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ui segment">
+                        <a href="{% url "SimpleBookStore:logout" %}">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="ui segments">
+                    <div class="ui segment">
+                        Hello
+                    </div>
+                    <div class="ui blue segment">
+                        <a href="{% url "SimpleBookStore:register" %}">Sign Up</a>
+                    </div>
+                    <div class="ui segment">
+                        <a href="{% url "SimpleBookStore:login" %}">Login</a>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    </div>
+
+{% endblock %}

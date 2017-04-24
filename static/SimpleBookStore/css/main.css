@@ -1,0 +1,12 @@
+body {
+    background: url(/static/SimpleBookStore/images/bg.jpg);
+}
+
+.main.container {
+    margin-top: 25px;
+}
+
+.center-column {
+    margin-top: 25px;
+    max-width: 450px;
+}
