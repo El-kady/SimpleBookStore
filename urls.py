@@ -1,4 +1,8 @@
 from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 from . import views
 
 urlpatterns = [
@@ -6,4 +10,9 @@ urlpatterns = [
     url(r'^login/$', views.login_view, name='login'),
     url(r'^register/$', views.register, name='register'),
     url(r'^logout/$', views.logout_view, name="logout"),
+
+    url(r'^book/(?P<pk>\d+)/$', views.BookView.as_view(), name='book'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

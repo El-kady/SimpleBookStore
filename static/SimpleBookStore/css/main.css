@@ -10,3 +10,7 @@ body {
     margin-top: 25px;
     max-width: 450px;
 }
+
+.books-list .card{
+    box-shadow:none;
+}

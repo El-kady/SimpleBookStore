@@ -4,9 +4,35 @@
     <div class="ui segments">
         <div class="ui segment">{{ segment_title }}</div>
         <div class="ui blue segment">
-            {% for book in books %}
-                {{ book.title }}
-            {% endfor %}
+            <div class="ui vertical stripe quote segment">
+                <div class="ui four column stackable internally celled grid">
+                    <div class="row books-list">
+                        {% for book in books %}
+                            <div class="column">
+                                <div class="ui card">
+                                    <div class="image">
+                                        <img src="{{ book.cover.url }}">
+                                    </div>
+                                    <div class="content">
+                                        <img class="ui avatar image"
+                                             src="{{ book.author.photo_url }}"> {{ book.author.name }}
+                                    </div>
+                                    <div class="content">
+                                        <a href="{% url 'SimpleBookStore:book' book.id %}" class="header">{{ book.title }}</a>
+                                        <div class="meta">
+                                            <span class="category">{{ book.category.title }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra">
+                                        Rating:
+                                        <div class="ui star rating" data-rating="4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

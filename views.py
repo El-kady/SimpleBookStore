@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -32,6 +32,9 @@ class Index(ListView):
         context['segment_title'] = 'New Books'
         return context
 
+class BookView(DetailView):
+    model = Book
+    template_name = 'SimpleBookStore/book.html'
 
 def login_view(request):
     if request.method == "GET":
