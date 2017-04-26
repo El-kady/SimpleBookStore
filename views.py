@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import JsonResponse
 
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -9,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
-from .models import Book
+from .models import Book, Vote
 import re
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
@@ -32,9 +33,24 @@ class Index(ListView):
         context['segment_title'] = 'New Books'
         return context
 
+
 class BookView(DetailView):
     model = Book
     template_name = 'SimpleBookStore/book.html'
+
+
+def rate_view(request):
+    if request.user.is_authenticated() and request.method == "POST":
+        book_id = request.POST.get('book_id')
+        value = request.POST.get('value')
+        user_id = request.user.id
+        obj, created = Vote.objects.update_or_create(
+            book_id=book_id, user_id=user_id,
+            defaults={'value': value}
+        )
+        return JsonResponse({'created': created})
+    return JsonResponse({"message": "not authorized"})
+
 
 def login_view(request):
     if request.method == "GET":

@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name="logout"),
 
     url(r'^book/(?P<pk>\d+)/$', views.BookView.as_view(), name='book'),
+
+    url(r'^api/rate/$', views.rate_view, name='rate'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

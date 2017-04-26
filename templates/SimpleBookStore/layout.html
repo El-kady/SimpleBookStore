@@ -7,7 +7,7 @@
             <a href="#" class="header item">
                 Simple Book Store
             </a>
-            <a class="item">
+            <a class="item" href="{% url "SimpleBookStore:index" %}">
                 <i class="home icon"></i> Home
             </a>
             <div class="right item">
@@ -64,9 +64,26 @@
                 </div>
             {% endif %}
 
+            <div class="ui segments">
+                <div class="ui segment">
+                    Categories
+                </div>
+                <div class="ui orange segment">
+                    <div class="ui middle aligned divided list">
+                        {% for category in categories %}
+                            <div class="item">
+                                <div class="right floated content">
+                                    <div class="ui tiny button">Follow</div>
+                                </div>
+                                <div class="content">
+                                    {{ category.title }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-
-    </div>
 
     </div>
 
