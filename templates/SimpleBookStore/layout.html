@@ -1,4 +1,5 @@
 {% extends 'SimpleBookStore/wrapper.html' %}
+{% load SimpleBookStore_tags %}
 
 {% block body %}
 
@@ -73,7 +74,7 @@
                         {% for category in categories %}
                             <div class="item">
                                 <div class="right floated content">
-                                    <div class="ui tiny button">Follow</div>
+                                    <button class="ui tiny button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
                                 </div>
                                 <div class="content">
                                     {{ category.title }}

@@ -1,14 +1,49 @@
 from django.db import models
 from django.utils.timezone import datetime
 from django.db.models import Count
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from math import ceil
 
-# Create your models here.
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    categories = models.ManyToManyField('Category', through='ProfileCategory', related_name='followed_by')
+    authors = models.ManyToManyField('Author', through='ProfileAuthor', related_name='followed_by')
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+
+class ProfileCategory(models.Model):
+    category = models.ForeignKey('Category')
+    profile = models.ForeignKey('Profile')
+    status = models.SmallIntegerField()
+    created_at = models.DateTimeField(default=datetime.now)
+
+
+class ProfileAuthor(models.Model):
+    author = models.ForeignKey('Author')
+    profile = models.ForeignKey('Profile')
+    status = models.SmallIntegerField()
+    created_at = models.DateTimeField(default=datetime.now)
+
+
 class Category(models.Model):
     title = models.CharField(max_length=120)
 
     def __str__(self):
         return self.title
+
 
 
 class Book(models.Model):

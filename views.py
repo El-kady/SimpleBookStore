@@ -9,8 +9,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+import time
 
-from .models import Book, Vote
+from .models import Book, Vote, Category, Author, ProfileCategory, ProfileAuthor
 import re
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
@@ -49,6 +50,28 @@ def rate_view(request):
             defaults={'value': value}
         )
         return JsonResponse({'created': created})
+    return JsonResponse({"message": "not authorized"})
+
+
+def follow_view(request):
+    time.sleep(1)
+    if request.user.is_authenticated() and request.method == "POST":
+        model = request.POST.get('model')
+        id = request.POST.get('id')
+        status = request.POST.get('status')
+        print(status)
+        if model == 'category':
+            obj, created = ProfileCategory.objects.update_or_create(
+                category_id=id, profile_id=request.user.profile.id,
+                defaults={'status': status}
+            )
+        elif model == 'author':
+            obj, created = ProfileAuthor.objects.update_or_create(
+                author_id=id, profile_id=request.user.profile.id,
+                defaults={'status': status}
+            )
+        return JsonResponse({'status': obj.status})
+
     return JsonResponse({"message": "not authorized"})
 
 

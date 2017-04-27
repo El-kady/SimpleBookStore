@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^book/(?P<pk>\d+)/$', views.BookView.as_view(), name='book'),
 
     url(r'^api/rate/$', views.rate_view, name='rate'),
+    url(r'^api/follow/$', views.follow_view, name='follow'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
