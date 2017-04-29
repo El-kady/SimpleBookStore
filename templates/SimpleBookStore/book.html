@@ -1,4 +1,5 @@
 {% extends 'SimpleBookStore/layout.html' %}
+{% load SimpleBookStore_tags %}
 {% block title %}{{ book.title }}{% endblock %}
 
 {% block content %}
@@ -7,42 +8,63 @@
             <div class="ui breadcrumb">
                 <a class="section" href="{% url 'SimpleBookStore:index' %}"><i class="home icon"></i> Home</a>
                 <div class="divider"> /</div>
-                <a class="section">{{ book.category.title }}</a>
+                <a class="section"
+                   href="{% url 'SimpleBookStore:category' book.category.id %}">{{ book.category.title }}</a>
                 <div class="divider"> /</div>
                 <div class="active section">{{ book.title }}</div>
             </div>
         </div>
         <div class="ui blue segment">
             <div class="ui divided items">
-                <div class="item">
+                <div class="item book-item">
                     <div class="image">
                         <img src="{{ book.cover.url }}">
+                        <div class="ui vertical segment">
+                            <div class="ui primary mini buttons">
+                                <div class="ui mini button">Want to Read</div>
+                                <div class="ui mini floating dropdown icon button">
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <div class="item">Read</div>
+                                        <div class="item">Currently Reading</div>
+                                        <div class="item">Want to Read</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="content">
                         <div class="ui huge header">{{ book.title }}</div>
                         <div class="meta">
-                            <span class="cinema">Union Square 14</span>
+                            <span>
+                                <a href="{% url 'SimpleBookStore:author' book.author.id %}">
+                                <img class="ui avatar image"
+                                     src="{{ book.author.photo_url }}"> {{ book.author.name }}
+                                </a>
+                            </span>
+
+                            {% if request.user.is_authenticated %}
+                                <button class="ui mini button toggle-follow" data-model="author"
+                                        data-id="{{ book.author.id }}"
+                                        data-status="{% following_status book.author.id profile_authors %}"
+                                        data-do="Follow"
+                                        data-undo="Unfollow"></button>
+                            {% endif %}
+                            Rate :
+                            <div class="ui star rating" data-rating="{{ book.rating }}" data-id="{{ book.id }}"></div>
                         </div>
                         <div class="description">
                             {{ book.description |linebreaks }}
                         </div>
                         <div class="extra">
 
-                            <div class="ui teal tiny buttons">
-                                <div class="ui tiny button">Save</div>
-                                <div class="ui tiny floating dropdown icon button">
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item"><i class="edit icon"></i> Edit Post</div>
-                                        <div class="item"><i class="delete icon"></i> Remove Post</div>
-                                        <div class="item"><i class="hide icon"></i> Hide Post</div>
-                                    </div>
-                                </div>
-                            </div>
 
-                                        <div class="ui star rating" data-rating="{{ book.rating }}" data-id="{{ book.id }}"></div>
                         </div>
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>

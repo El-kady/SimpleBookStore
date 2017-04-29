@@ -14,3 +14,7 @@ body {
 .books-list .card{
     box-shadow:none;
 }
+
+.book-item .image{
+    text-align: center;
+}

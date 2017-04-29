@@ -34,6 +34,40 @@ class Index(ListView):
         context['segment_title'] = 'New Books'
         return context
 
+class CategoryView(ListView):
+    model = Book
+    paginate_by = 30
+    template_name = 'SimpleBookStore/category.html'
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        return Book.objects.filter(category_id=self.kwargs.get('pk')).select_related(
+            'author', 'category'
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['category'] = category = Category.objects.get(pk=self.kwargs.get('pk'))
+        context['segment_title'] = category.title
+        return context
+
+
+class AuthorView(ListView):
+    model = Book
+    paginate_by = 30
+    template_name = 'SimpleBookStore/author.html'
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        return Book.objects.filter(author_id=self.kwargs.get('pk')).select_related(
+            'author', 'category'
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['author'] = author = Author.objects.get(pk=self.kwargs.get('pk'))
+        context['segment_title'] = author.name
+        return context
 
 class BookView(DetailView):
     model = Book

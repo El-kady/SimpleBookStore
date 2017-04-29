@@ -73,11 +73,13 @@
                     <div class="ui middle aligned divided list">
                         {% for category in categories %}
                             <div class="item">
-                                <div class="right floated content">
-                                    <button class="ui tiny button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
-                                </div>
+                                {% if request.user.is_authenticated %}
+                                    <div class="right floated content">
+                                        <button class="ui mini button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
+                                    </div>
+                                {% endif %}
                                 <div class="content">
-                                    {{ category.title }}
+                                    <a href="{% url 'SimpleBookStore:category' category.id %}">{{ category.title }}</a>
                                 </div>
                             </div>
                         {% endfor %}
