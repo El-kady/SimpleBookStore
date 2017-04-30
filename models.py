@@ -7,6 +7,13 @@ from django.dispatch import receiver
 from math import ceil
 
 
+class Notification(models.Model):
+    user = models.ForeignKey(User, related_name='received_notifications')
+    book = models.ForeignKey('Book', null=True)
+    read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=datetime.now)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category', through='ProfileCategory', related_name='followed_by')
@@ -80,6 +87,7 @@ class Book(models.Model):
 
     class Meta:
         ordering = ['-id']
+
 
 class Vote(models.Model):
     book = models.ForeignKey('Book')

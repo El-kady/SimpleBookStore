@@ -5,6 +5,7 @@ def simple_book_store_processor(request):
     categories = Category.objects.all()
 
     values = {
+        'notifications': [],
         'categories': categories,
         'profile_categories': [],
         'profile_authors': [],
@@ -25,5 +26,7 @@ def simple_book_store_processor(request):
         values['profile_books'][1] = ProfileBook.objects.filter(profile=request.user.profile, status=1).count()
         values['profile_books'][2] = ProfileBook.objects.filter(profile=request.user.profile, status=2).count()
         values['profile_books'][3] = ProfileBook.objects.filter(profile=request.user.profile, status=3).count()
+
+        values["notifications"] = request.user.received_notifications.all()
 
     return values

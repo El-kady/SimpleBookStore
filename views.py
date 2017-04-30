@@ -14,6 +14,8 @@ import time
 from .models import Book, Vote, Category, Author, ProfileCategory, ProfileAuthor, ProfileBook
 import re
 
+from django.db.models import Q
+
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 User = get_user_model()
 
@@ -25,9 +27,18 @@ class Index(ListView):
     context_object_name = 'books'
 
     def get_queryset(self):
-        return Book.objects.select_related(
-            'author', 'category'
-        )
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            author_ids = ProfileAuthor.objects.filter(profile=profile, status=1).values_list('author_id', flat=True)
+            category_ids = ProfileCategory.objects.filter(profile=profile, status=1).values_list('category_id', flat=True)
+
+            return Book.objects.filter(Q(author__in=author_ids) | Q(category__in=category_ids)).select_related(
+                'author', 'category'
+            )
+        else:
+            return Book.objects.select_related(
+                'author', 'category'
+            )
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
@@ -60,7 +71,6 @@ class UserBooksView(ListView):
     context_object_name = 'books'
 
     def get_queryset(self):
-
         books_ids = ProfileBook.objects.filter(profile=self.request.user.profile,
                                                status=self.kwargs.get('status')).values_list('book_id', flat=True)
 
