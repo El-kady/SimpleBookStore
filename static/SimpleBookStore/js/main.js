@@ -7,13 +7,33 @@ $('.ui.rating').rating({
         }, 'json')
     }
 });
+
 $('.ui.dropdown').dropdown();
 
-$('.combo.dropdown')
-  .dropdown({
-    action: 'combo'
-  })
-;
+$(".book-actions").each(function () {
+    var status = $(this).data('status');
+    $(this).children().each(function(){
+        if ($(this).data("action") === status) {
+            $(this).addClass("positive");
+        }
+    })
+});
+
+$(document).on("click", ".book-actions > button", function () {
+    var button = $(this);
+    var buttons = button.parent();
+    buttons.children().each(function () {
+        $(this).removeClass("positive")
+    });
+    var id = buttons.data('id');
+    var action = button.data('action');
+
+    button.addClass('loading').prop("disabled", true);
+    $.post(urls.book_action, {id: id, action: action}, function (response) {
+        buttons.attr("data-status",action);
+        button.removeClass('loading').prop("disabled", false).addClass("positive");
+    }, 'json')
+});
 
 $('.toggle-follow').each(function () {
     var button = $(this);
@@ -31,7 +51,7 @@ $(document).on("click", ".toggle-follow", function () {
     var model = button.data('model');
     var id = button.data('id');
 
-    button.addClass('loading');
+    button.addClass('loading').prop("disabled", true);
     $.post(urls.follow, {model: model, id: id, status: status}, function (response) {
         if (status === 1) {
             button.text(button.data('undo'));
@@ -39,6 +59,6 @@ $(document).on("click", ".toggle-follow", function () {
             button.text(button.data('do'));
         }
         button.attr('data-status', status);
-        button.removeClass('loading');
+        button.removeClass('loading').prop("disabled", false);
     }, 'json')
 });

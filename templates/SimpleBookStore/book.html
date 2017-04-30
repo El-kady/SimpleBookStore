@@ -10,8 +10,6 @@
                 <div class="divider"> /</div>
                 <a class="section"
                    href="{% url 'SimpleBookStore:category' book.category.id %}">{{ book.category.title }}</a>
-                <div class="divider"> /</div>
-                <div class="active section">{{ book.title }}</div>
             </div>
         </div>
         <div class="ui blue segment">
@@ -19,19 +17,6 @@
                 <div class="item book-item">
                     <div class="image">
                         <img src="{{ book.cover.url }}">
-                        <div class="ui vertical segment">
-                            <div class="ui primary tiny buttons">
-                                <div class="ui tiny button">Want to Read</div>
-                                <div class="ui combo tiny floating dropdown icon button">
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item">Read</div>
-                                        <div class="item">Currently Reading</div>
-                                        <div class="item">Want to Read</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="content">
                         <div class="ui huge header">{{ book.title }}</div>
@@ -57,14 +42,14 @@
                             {{ book.description |linebreaks }}
                         </div>
                         <div class="extra">
-
-
+                            <div class="ui small toggle buttons book-actions" data-id="{{ book.id }}"
+                                 data-status="{{ user_status }}">
+                                <button class="ui toggle button" data-action="3">Read</button>
+                                <button class="ui toggle button" data-action="2">Currently Reading</button>
+                                <button class="ui toggle button" data-action="1">Want to Read</button>
+                            </div>
                         </div>
-
-
                     </div>
-
-
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category', through='ProfileCategory', related_name='followed_by')
     authors = models.ManyToManyField('Author', through='ProfileAuthor', related_name='followed_by')
+    books = models.ManyToManyField('Book', through='ProfileBook', related_name='user_by')
 
 
 @receiver(post_save, sender=User)
@@ -38,6 +39,13 @@ class ProfileAuthor(models.Model):
     created_at = models.DateTimeField(default=datetime.now)
 
 
+class ProfileBook(models.Model):
+    book = models.ForeignKey('Book')
+    profile = models.ForeignKey('Profile')
+    status = models.SmallIntegerField()
+    created_at = models.DateTimeField(default=datetime.now)
+
+
 class Category(models.Model):
     title = models.CharField(max_length=120)
 
@@ -51,7 +59,7 @@ class Book(models.Model):
     category = models.ForeignKey('Category', related_name='books')
     author = models.ForeignKey('Author', related_name='books')
     cover = models.ImageField(upload_to='uploads/books/covers/')
-    users = models.ManyToManyField('auth.User', through='UserBook', related_name='users')
+    created_at = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return self.title
@@ -70,18 +78,13 @@ class Book(models.Model):
 
         return ceil(_rating)
 
+    class Meta:
+        ordering = ['-id']
 
 class Vote(models.Model):
     book = models.ForeignKey('Book')
     user = models.ForeignKey('auth.User')
     value = models.SmallIntegerField()
-    created_at = models.DateTimeField(default=datetime.now)
-
-
-class UserBook(models.Model):
-    book = models.ForeignKey('Book')
-    user = models.ForeignKey('auth.User')
-    status = models.SmallIntegerField()
     created_at = models.DateTimeField(default=datetime.now)
 
 
@@ -97,4 +100,4 @@ class Author(models.Model):
         if self.photo and hasattr(self.photo, 'url'):
             return self.photo.url
         else:
-            return 'static/SimpleBookStore/images/avatar.png'
+            return '/static/SimpleBookStore/images/avatar.png'

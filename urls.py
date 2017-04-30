@@ -15,10 +15,13 @@ urlpatterns = [
     url(r'^category/(?P<pk>\d+)/$', views.CategoryView.as_view(), name='category'),
     url(r'^author/(?P<pk>\d+)/$', views.AuthorView.as_view(), name='author'),
 
+    url(r'^user-books/(?P<status>\d+)/$', views.UserBooksView.as_view(), name='user-books'),
+
     url(r'^search/$', views.SearchView.as_view(), name='search'),
 
     url(r'^api/rate/$', views.rate_view, name='rate'),
     url(r'^api/follow/$', views.follow_view, name='follow'),
+    url(r'^api/book-action/$', views.book_action_view, name='book-action'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

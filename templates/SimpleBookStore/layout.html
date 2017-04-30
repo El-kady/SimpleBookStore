@@ -5,11 +5,8 @@
 
     <div class="ui attached stackable menu">
         <div class="ui container">
-            <a href="#" class="header item">
+            <a href="{% url "SimpleBookStore:index" %}" class="header item">
                 Simple Book Store
-            </a>
-            <a class="item" href="{% url "SimpleBookStore:index" %}">
-                <i class="home icon"></i> Home
             </a>
             <div class="right item">
                 <form action="{% url "SimpleBookStore:search" %}">
@@ -29,23 +26,35 @@
             {% if request.user.is_authenticated %}
                 <div class="ui segments">
                     <div class="ui segment">
-                        {{ request.user.username }}
+                        Welcome, <strong>{{ request.user.username }}</strong>
                     </div>
-                    <div class="ui blue segment">
-                        <div class="ui large horizontal divided list">
+                    <div class="ui blue segment user-info">
+                        <div class="ui very horizontal divided list">
                             <div class="item">
+                                <i class="heartbeat icon"></i>
                                 <div class="content">
-                                    <div class="header">Helen</div>
+                                    <a href="{% url "SimpleBookStore:user-books" 1 %}">
+                                        <span class="header">{{ profile_books.1 }}</span>
+                                        Wish
+                                    </a>
                                 </div>
                             </div>
                             <div class="item">
+                                <i class="comment icon"></i>
                                 <div class="content">
-                                    <div class="header">Christian</div>
+                                    <a href="{% url "SimpleBookStore:user-books" 2 %}">
+                                        <span class="header">{{ profile_books.2 }}</span>
+                                        Reading
+                                    </a>
                                 </div>
                             </div>
                             <div class="item">
+                                <i class="calendar icon"></i>
                                 <div class="content">
-                                    <div class="header">Daniel</div>
+                                    <a href="{% url "SimpleBookStore:user-books" 3 %}">
+                                        <span class="header">{{ profile_books.3 }}</span>
+                                        Read
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -73,13 +82,16 @@
                 <div class="ui segment">
                     Categories
                 </div>
-                <div class="ui orange segment">
+                <div class="ui blue segment">
                     <div class="ui middle aligned divided list">
                         {% for category in categories %}
                             <div class="item">
                                 {% if request.user.is_authenticated %}
                                     <div class="right floated content">
-                                        <button class="ui mini primary button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
+                                        <button class="ui mini primary button toggle-follow" data-model="category"
+                                                data-id="{{ category.id }}"
+                                                data-status="{% following_status category.id profile_categories %}"
+                                                data-do="Follow" data-undo="Unfollow"></button>
                                     </div>
                                 {% endif %}
                                 <div class="content">

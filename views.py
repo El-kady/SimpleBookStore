@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 import time
 
-from .models import Book, Vote, Category, Author, ProfileCategory, ProfileAuthor
+from .models import Book, Vote, Category, Author, ProfileCategory, ProfileAuthor, ProfileBook
 import re
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
@@ -50,6 +50,27 @@ class CategoryView(ListView):
         context = super(ListView, self).get_context_data(**kwargs)
         context['category'] = category = Category.objects.get(pk=self.kwargs.get('pk'))
         context['segment_title'] = category.title
+        return context
+
+
+class UserBooksView(ListView):
+    model = Book
+    paginate_by = 30
+    template_name = 'SimpleBookStore/user_books.html'
+    context_object_name = 'books'
+
+    def get_queryset(self):
+
+        books_ids = ProfileBook.objects.filter(profile=self.request.user.profile,
+                                               status=self.kwargs.get('status')).values_list('book_id', flat=True)
+
+        return Book.objects.filter(id__in=books_ids).select_related(
+            'author', 'category'
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['segment_title'] = "My Books"
         return context
 
 
@@ -100,6 +121,35 @@ class SearchView(ListView):
 class BookView(DetailView):
     model = Book
     template_name = 'SimpleBookStore/book.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            try:
+                user_status = ProfileBook.objects.get(profile=self.request.user.profile,
+                                                      book=self.get_object()).status
+            except:
+                user_status = 0
+
+        context['user_status'] = user_status
+
+        return context
+
+
+def book_action_view(request):
+    time.sleep(1)
+    if request.user.is_authenticated() and request.method == "POST":
+        id = request.POST.get('id')
+        action = request.POST.get('action')
+
+        obj, created = ProfileBook.objects.update_or_create(
+            book_id=id, profile_id=request.user.profile.id,
+            defaults={'status': action}
+        )
+        return JsonResponse({'status': obj.status})
+
+    return JsonResponse({"message": "not authorized"})
 
 
 def rate_view(request):
