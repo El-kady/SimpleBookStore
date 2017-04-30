@@ -134,16 +134,11 @@ class BookView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
+        context['user_status'] = 0
 
         if self.request.user.is_authenticated:
-            try:
-                user_status = ProfileBook.objects.get(profile=self.request.user.profile,
-                                                      book=self.get_object()).status
-            except:
-                user_status = 0
-
-        context['user_status'] = user_status
-
+            context['user_status'] = ProfileBook.objects.get(profile=self.request.user.profile,
+                                                             book=self.get_object()).status
         return context
 
 
