@@ -1,6 +1,6 @@
 # SimpleBookStore
 Simple Book Store Using Django Framework
-#Configuration
+# Configuration
 Required Settings:
 ```
 INSTALLED_APPS += [
@@ -26,9 +26,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 ```
 
-#Configure URLs
+# Configure URLs
 Simply include the urls
-
+```
 from django.conf.urls import url, include
 from django.contrib import admin
 from SimpleBookStore import urls as SimpleBookStore_urls
