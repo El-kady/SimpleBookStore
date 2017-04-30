@@ -20,9 +20,9 @@
                     <div class="image">
                         <img src="{{ book.cover.url }}">
                         <div class="ui vertical segment">
-                            <div class="ui primary mini buttons">
-                                <div class="ui mini button">Want to Read</div>
-                                <div class="ui mini floating dropdown icon button">
+                            <div class="ui primary tiny buttons">
+                                <div class="ui tiny button">Want to Read</div>
+                                <div class="ui combo tiny floating dropdown icon button">
                                     <i class="dropdown icon"></i>
                                     <div class="menu">
                                         <div class="item">Read</div>
@@ -44,7 +44,7 @@
                             </span>
 
                             {% if request.user.is_authenticated %}
-                                <button class="ui mini button toggle-follow" data-model="author"
+                                <button class="ui mini primary button toggle-follow" data-model="author"
                                         data-id="{{ book.author.id }}"
                                         data-status="{% following_status book.author.id profile_authors %}"
                                         data-do="Follow"

@@ -9,6 +9,12 @@ $('.ui.rating').rating({
 });
 $('.ui.dropdown').dropdown();
 
+$('.combo.dropdown')
+  .dropdown({
+    action: 'combo'
+  })
+;
+
 $('.toggle-follow').each(function () {
     var button = $(this);
     var status = button.data('status');

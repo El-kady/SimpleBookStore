@@ -12,7 +12,11 @@
                 <i class="home icon"></i> Home
             </a>
             <div class="right item">
-                <div class="ui input"><input type="text" placeholder="Search..."></div>
+                <form action="{% url "SimpleBookStore:search" %}">
+                    <div class="ui input">
+                        <input type="text" name="query" placeholder="Search...">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -75,7 +79,7 @@
                             <div class="item">
                                 {% if request.user.is_authenticated %}
                                     <div class="right floated content">
-                                        <button class="ui mini button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
+                                        <button class="ui mini primary button toggle-follow" data-model="category" data-id="{{ category.id }}" data-status="{% following_status category.id  profile_categories %}" data-do="Follow" data-undo="Unfollow"></button>
                                     </div>
                                 {% endif %}
                                 <div class="content">

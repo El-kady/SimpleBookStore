@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^category/(?P<pk>\d+)/$', views.CategoryView.as_view(), name='category'),
     url(r'^author/(?P<pk>\d+)/$', views.AuthorView.as_view(), name='author'),
 
+    url(r'^search/$', views.SearchView.as_view(), name='search'),
+
     url(r'^api/rate/$', views.rate_view, name='rate'),
     url(r'^api/follow/$', views.follow_view, name='follow'),
 ]

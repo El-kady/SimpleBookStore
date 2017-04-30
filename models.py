@@ -45,13 +45,13 @@ class Category(models.Model):
         return self.title
 
 
-
 class Book(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
     category = models.ForeignKey('Category', related_name='books')
     author = models.ForeignKey('Author', related_name='books')
     cover = models.ImageField(upload_to='uploads/books/covers/')
+    users = models.ManyToManyField('auth.User', through='UserBook', related_name='users')
 
     def __str__(self):
         return self.title
@@ -75,6 +75,13 @@ class Vote(models.Model):
     book = models.ForeignKey('Book')
     user = models.ForeignKey('auth.User')
     value = models.SmallIntegerField()
+    created_at = models.DateTimeField(default=datetime.now)
+
+
+class UserBook(models.Model):
+    book = models.ForeignKey('Book')
+    user = models.ForeignKey('auth.User')
+    status = models.SmallIntegerField()
     created_at = models.DateTimeField(default=datetime.now)
 
 
