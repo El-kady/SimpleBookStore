@@ -66,10 +66,12 @@
                                 <div class="item">
                                     <img class="ui avatar image" src="{{ notification.book.cover.url }}">
                                     <div class="content">
-                                        <a class="header">{{ notification.book.title }}</a>
+                                        <a class="header" href="{% url 'SimpleBookStore:book' notification.book.id %}">{{ notification.book.title }}</a>
                                         <div class="description">{{ notification.book.author.name }} Add A New Book</div>
                                     </div>
                                 </div>
+                            {% empty %}
+                                <div class="item"> No new nofitications </div>
                             {% endfor %}
                         </div>
                     </div>

@@ -13,6 +13,8 @@ class Notification(models.Model):
     read = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.now)
 
+    class Meta:
+        ordering = ['-created_at']
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
