@@ -5,7 +5,7 @@
 
     <div class="ui attached stackable menu">
         <div class="ui container">
-            <a href="{% url "SimpleBookStore:index" %}" class="header item">
+            <a href="{% url "SimpleBookStore:index" %}" class="header item header-logo">
                 Simple Book Store
             </a>
             <div class="right item">
@@ -86,10 +86,10 @@
                     </div>
 
                     <div class="ui blue segment">
-                        <a href="{% url "SimpleBookStore:login" %}"><i class="sign in icon"></i> Sign In</a>
+                        <a class="signin-btn" href="{% url "SimpleBookStore:login" %}"><i class="sign in icon"></i> Sign In</a>
                     </div>
                     <div class="ui segment">
-                        <a href="{% url "SimpleBookStore:register" %}"><i class="user icon"></i> Sign Up</a>
+                        <a class="signup-btn" href="{% url "SimpleBookStore:register" %}"><i class="user icon"></i> Sign Up</a>
                     </div>
                 </div>
             {% endif %}
